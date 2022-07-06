@@ -1,7 +1,7 @@
 <script setup>
 import { ref, reactive } from 'vue';
 
-const input = ref(null);
+const text = ref('');
 const todos = reactive({
   list: [
     { id: 1, isFinished: false, text: 'Do Washing' },
@@ -13,6 +13,10 @@ const todos = reactive({
   // 'ALL' | 'FINISHED' | 'UNFINISHED'
   filter: 'ALL',
 });
+
+const handleInput = (e) => {
+  text.value = e.target.value;
+};
 
 const finishedTodos = () => {
   return todos.list.filter(todo => todo.isFinished);
@@ -33,10 +37,10 @@ const filteredTodos = () => {
 };
 
 const addTodo = () => {
-  const { value } = input.value;
+  const { value } = text;
   const { list } = todos;
   list.push({ text: value, id: Date.now(), isFinished: false });
-  input.value.value = '';
+  text.value = '';
 };
 
 const setFilter = (filter) => {
@@ -77,7 +81,8 @@ const removeTodo = (id) => {
           type="search"
           placeholder="enter todo"
           aria-label="Enter todo"
-          ref="input"
+          :value="text"
+          @input="handleInput"
         />
         <button
           class="btn btn-outline-success"
